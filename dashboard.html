@@ -17,6 +17,39 @@
       color: #0f172a;
     }
 
+    .navbar {
+      background: #0f172a;
+      padding: 16px 20px;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .nav-links a {
+      color: #dbeafe;
+      text-decoration: none;
+      margin-left: 18px;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .nav-links a:hover {
+      color: white;
+    }
+
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -108,6 +141,8 @@
       padding: 12px 18px;
       border-radius: 12px;
       font-weight: bold;
+      border: none;
+      cursor: pointer;
     }
 
     .btn:hover {
@@ -115,7 +150,8 @@
     }
 
     .expense-box,
-    .emi-box {
+    .emi-box,
+    .sip-box {
       background: white;
       border-radius: 18px;
       padding: 22px;
@@ -124,13 +160,15 @@
     }
 
     .expense-box h2,
-    .emi-box h2 {
+    .emi-box h2,
+    .sip-box h2 {
       color: #1e3a8a;
       margin-bottom: 14px;
     }
 
     .expense-box label,
-    .emi-box label {
+    .emi-box label,
+    .sip-box label {
       display: block;
       margin-top: 12px;
       margin-bottom: 8px;
@@ -139,7 +177,8 @@
 
     .expense-box input,
     .expense-box select,
-    .emi-box input {
+    .emi-box input,
+    .sip-box input {
       width: 100%;
       padding: 12px;
       border: 1px solid #cbd5e1;
@@ -148,7 +187,8 @@
     }
 
     .expense-box button,
-    .emi-box button {
+    .emi-box button,
+    .sip-box button {
       margin-top: 16px;
       padding: 12px 18px;
       background: #2563eb;
@@ -160,7 +200,8 @@
     }
 
     .expense-box button:hover,
-    .emi-box button:hover {
+    .emi-box button:hover,
+    .sip-box button:hover {
       background: #1d4ed8;
     }
 
@@ -180,12 +221,9 @@
       gap: 10px;
     }
 
-    .expense-item span {
-      font-size: 15px;
-    }
-
     .total-box,
-    .emi-result {
+    .emi-result,
+    .sip-result {
       margin-top: 18px;
       background: #eff6ff;
       border-radius: 12px;
@@ -194,7 +232,7 @@
       color: #1e3a8a;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
       .topbar h1 {
         font-size: 28px;
       }
@@ -203,10 +241,26 @@
         flex-direction: column;
         align-items: flex-start;
       }
+
+      .nav-links a {
+        margin-left: 0;
+        margin-right: 14px;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="navbar">
+    <div class="nav-container">
+      <div class="logo">FinVault</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="login.html">Login</a>
+        <a href="dashboard.html">Dashboard</a>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <div class="topbar">
       <h1>FinVault Dashboard</h1>
@@ -277,6 +331,25 @@
 
       <div class="emi-result">
         Monthly EMI: <span id="emiResult">₹0</span>
+      </div>
+    </div>
+
+    <div class="sip-box">
+      <h2>SIP Calculator</h2>
+
+      <label for="sipAmount">Monthly SIP Amount</label>
+      <input type="number" id="sipAmount" placeholder="Example: 5000" />
+
+      <label for="sipRate">Expected Annual Return (%)</label>
+      <input type="number" id="sipRate" placeholder="Example: 12" />
+
+      <label for="sipYears">Years</label>
+      <input type="number" id="sipYears" placeholder="Example: 10" />
+
+      <button onclick="calculateSIP()">Calculate SIP</button>
+
+      <div class="sip-result">
+        Estimated Future Value: <span id="sipResult">₹0</span>
       </div>
     </div>
 
@@ -357,6 +430,24 @@
         (Math.pow(1 + monthlyRate, months) - 1);
 
       document.getElementById("emiResult").innerText = "₹" + emi.toFixed(2);
+    }
+
+    function calculateSIP() {
+      const monthly = Number(document.getElementById("sipAmount").value);
+      const annualRate = Number(document.getElementById("sipRate").value);
+      const years = Number(document.getElementById("sipYears").value);
+
+      if (monthly === 0 || annualRate === 0 || years === 0) {
+        alert("Please enter all SIP details");
+        return;
+      }
+
+      const monthlyRate = annualRate / 12 / 100;
+      const months = years * 12;
+      const futureValue =
+        monthly * (((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate));
+
+      document.getElementById("sipResult").innerText = "₹" + futureValue.toFixed(2);
     }
   </script>
 </body>
