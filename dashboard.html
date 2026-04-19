@@ -286,12 +286,15 @@
       <label for="docType">Document Type</label>
       <input type="text" id="docType" placeholder="Example: Salary Slip / Form 16 / Bank Statement" />
 
+      <label for="docFile">Choose File</label>
+      <input type="file" id="docFile" />
+
       <button onclick="addDocument()">Add Document</button>
 
       <div class="vault-list" id="vaultList"></div>
 
       <div class="vault-note">
-        This is a demo vault for now. Real file upload will come later.
+        You can now pick a real file from your laptop. This is still not cloud upload yet.
       </div>
     </div>
 
@@ -418,20 +421,25 @@
     function addDocument() {
       const name = document.getElementById("docName").value;
       const type = document.getElementById("docType").value;
+      const fileInput = document.getElementById("docFile");
+      const file = fileInput.files[0];
 
       if (name === "" || type === "") {
         alert("Please enter document name and type");
         return;
       }
 
+      const fileName = file ? file.name : "No file selected";
+
       const list = document.getElementById("vaultList");
       const item = document.createElement("div");
       item.className = "vault-item";
-      item.innerHTML = "<span><strong>" + name + "</strong></span><span>" + type + "</span>";
+      item.innerHTML = "<span><strong>" + name + "</strong><br><small>" + fileName + "</small></span><span>" + type + "</span>";
       list.appendChild(item);
 
       document.getElementById("docName").value = "";
       document.getElementById("docType").value = "";
+      fileInput.value = "";
     }
 
     function addExpense() {
