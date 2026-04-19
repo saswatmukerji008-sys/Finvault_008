@@ -151,7 +151,8 @@
 
     .expense-box,
     .emi-box,
-    .sip-box {
+    .sip-box,
+    .tax-box {
       background: white;
       border-radius: 18px;
       padding: 22px;
@@ -161,14 +162,16 @@
 
     .expense-box h2,
     .emi-box h2,
-    .sip-box h2 {
+    .sip-box h2,
+    .tax-box h2 {
       color: #1e3a8a;
       margin-bottom: 14px;
     }
 
     .expense-box label,
     .emi-box label,
-    .sip-box label {
+    .sip-box label,
+    .tax-box label {
       display: block;
       margin-top: 12px;
       margin-bottom: 8px;
@@ -178,7 +181,8 @@
     .expense-box input,
     .expense-box select,
     .emi-box input,
-    .sip-box input {
+    .sip-box input,
+    .tax-box input {
       width: 100%;
       padding: 12px;
       border: 1px solid #cbd5e1;
@@ -188,7 +192,8 @@
 
     .expense-box button,
     .emi-box button,
-    .sip-box button {
+    .sip-box button,
+    .tax-box button {
       margin-top: 16px;
       padding: 12px 18px;
       background: #2563eb;
@@ -201,7 +206,8 @@
 
     .expense-box button:hover,
     .emi-box button:hover,
-    .sip-box button:hover {
+    .sip-box button:hover,
+    .tax-box button:hover {
       background: #1d4ed8;
     }
 
@@ -223,13 +229,15 @@
 
     .total-box,
     .emi-result,
-    .sip-result {
+    .sip-result,
+    .tax-result {
       margin-top: 18px;
       background: #eff6ff;
       border-radius: 12px;
       padding: 14px;
       font-weight: bold;
       color: #1e3a8a;
+      line-height: 1.8;
     }
 
     @media (max-width: 700px) {
@@ -353,6 +361,24 @@
       </div>
     </div>
 
+    <div class="tax-box">
+      <h2>Tax Calculator</h2>
+
+      <label for="annualIncome">Annual Income</label>
+      <input type="number" id="annualIncome" placeholder="Example: 1200000" />
+
+      <label for="deductions">Deductions (Old Regime)</label>
+      <input type="number" id="deductions" placeholder="Example: 150000" />
+
+      <button onclick="calculateTax()">Calculate Tax</button>
+
+      <div class="tax-result">
+        Old Regime Tax: <span id="oldTaxResult">₹0</span><br />
+        New Regime Tax: <span id="newTaxResult">₹0</span><br />
+        Better Option: <span id="betterOption">-</span>
+      </div>
+    </div>
+
     <h2 class="section-title">Your Features</h2>
 
     <div class="grid">
@@ -448,6 +474,59 @@
         monthly * (((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate));
 
       document.getElementById("sipResult").innerText = "₹" + futureValue.toFixed(2);
+    }
+
+    function calculateTax() {
+      const income = Number(document.getElementById("annualIncome").value);
+      const deductions = Number(document.getElementById("deductions").value);
+
+      if (income === 0) {
+        alert("Please enter annual income");
+        return;
+      }
+
+      const oldTaxableIncome = Math.max(0, income - deductions - 50000);
+      let oldTax = 0;
+
+      if (oldTaxableIncome > 250000) {
+        oldTax += Math.min(oldTaxableIncome - 250000, 250000) * 0.05;
+      }
+      if (oldTaxableIncome > 500000) {
+        oldTax += Math.min(oldTaxableIncome - 500000, 500000) * 0.20;
+      }
+      if (oldTaxableIncome > 1000000) {
+        oldTax += (oldTaxableIncome - 1000000) * 0.30;
+      }
+
+      const newTaxableIncome = Math.max(0, income - 75000);
+      let newTax = 0;
+
+      if (newTaxableIncome > 300000) {
+        newTax += Math.min(newTaxableIncome - 300000, 300000) * 0.05;
+      }
+      if (newTaxableIncome > 600000) {
+        newTax += Math.min(newTaxableIncome - 600000, 300000) * 0.10;
+      }
+      if (newTaxableIncome > 900000) {
+        newTax += Math.min(newTaxableIncome - 900000, 300000) * 0.15;
+      }
+      if (newTaxableIncome > 1200000) {
+        newTax += Math.min(newTaxableIncome - 1200000, 300000) * 0.20;
+      }
+      if (newTaxableIncome > 1500000) {
+        newTax += (newTaxableIncome - 1500000) * 0.30;
+      }
+
+      document.getElementById("oldTaxResult").innerText = "₹" + oldTax.toFixed(2);
+      document.getElementById("newTaxResult").innerText = "₹" + newTax.toFixed(2);
+
+      if (oldTax < newTax) {
+        document.getElementById("betterOption").innerText = "Old Regime";
+      } else if (newTax < oldTax) {
+        document.getElementById("betterOption").innerText = "New Regime";
+      } else {
+        document.getElementById("betterOption").innerText = "Both Same";
+      }
     }
   </script>
 </body>
