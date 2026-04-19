@@ -199,6 +199,15 @@
       background: #1d4ed8;
     }
 
+    .clear-btn {
+      background: #f59e0b !important;
+      margin-left: 10px;
+    }
+
+    .clear-btn:hover {
+      background: #d97706 !important;
+    }
+
     .expense-list,
     .vault-list {
       margin-top: 20px;
@@ -310,6 +319,10 @@
         margin-left: 0;
         margin-right: 14px;
       }
+
+      .clear-btn {
+        margin-left: 0;
+      }
     }
   </style>
 </head>
@@ -392,6 +405,7 @@
       <input type="number" id="expenseAmount" placeholder="Example: 5000" />
 
       <button onclick="addExpense()">Add Expense</button>
+      <button onclick="clearAllExpenses()" class="clear-btn">Clear All Expenses</button>
 
       <div class="expense-list" id="expenseList"></div>
 
@@ -615,6 +629,12 @@
 
     function deleteExpense(index) {
       expenses.splice(index, 1);
+      localStorage.setItem("finvaultExpenses", JSON.stringify(expenses));
+      renderExpenses();
+    }
+
+    function clearAllExpenses() {
+      expenses = [];
       localStorage.setItem("finvaultExpenses", JSON.stringify(expenses));
       renderExpenses();
     }
