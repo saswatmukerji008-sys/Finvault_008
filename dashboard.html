@@ -226,13 +226,15 @@
       gap: 10px;
     }
 
-    .expense-left {
+    .expense-left,
+    .vault-left {
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
-    .expense-right {
+    .expense-right,
+    .vault-right {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -310,7 +312,8 @@
         align-items: flex-start;
       }
 
-      .expense-right {
+      .expense-right,
+      .vault-right {
         width: 100%;
         justify-content: space-between;
       }
@@ -380,7 +383,7 @@
       <div class="vault-list" id="vaultList"></div>
 
       <div class="vault-note">
-        You can now pick a real file from your laptop. This is still not cloud upload yet.
+        Files are shown by name only. Actual file content is not uploaded to cloud yet.
       </div>
     </div>
 
@@ -558,6 +561,22 @@
   <script>
     let total = 0;
     let expenses = [];
+    let documents = [];
+
+    function renderDocuments() {
+      const list = document.getElementById("vaultList");
+      list.innerHTML = "";
+
+      for (let i = 0; i < documents.length; i++) {
+        const doc = documents[i];
+        const item = document.createElement("div");
+        item.className = "vault-item";
+        item.innerHTML =
+          '<div class="vault-left"><strong>' + doc.name + '</strong><small>' + doc.fileName + '</small></div>' +
+          '<div class="vault-right"><span>' + doc.type + '</span><button class="delete-btn" onclick="deleteDocument(' + i + ')">Delete</button></div>';
+        list.appendChild(item);
+      }
+    }
 
     function addDocument() {
       const name = document.getElementById("docName").value;
@@ -572,15 +591,34 @@
 
       const fileName = file ? file.name : "No file selected";
 
-      const list = document.getElementById("vaultList");
-      const item = document.createElement("div");
-      item.className = "vault-item";
-      item.innerHTML = "<span><strong>" + name + "</strong><br><small>" + fileName + "</small></span><span>" + type + "</span>";
-      list.appendChild(item);
+      const documentData = {
+        name: name,
+        type: type,
+        fileName: fileName
+      };
+
+      documents.push(documentData);
+      localStorage.setItem("finvaultDocuments", JSON.stringify(documents));
+      renderDocuments();
 
       document.getElementById("docName").value = "";
       document.getElementById("docType").value = "";
       fileInput.value = "";
+    }
+
+    function deleteDocument(index) {
+      documents.splice(index, 1);
+      localStorage.setItem("finvaultDocuments", JSON.stringify(documents));
+      renderDocuments();
+    }
+
+    function loadDocuments() {
+      const savedDocuments = localStorage.getItem("finvaultDocuments");
+
+      if (savedDocuments) {
+        documents = JSON.parse(savedDocuments);
+        renderDocuments();
+      }
     }
 
     function renderExpenses() {
@@ -796,6 +834,7 @@
     window.onload = function () {
       loadProfile();
       loadExpenses();
+      loadDocuments();
     };
   </script>
 </body>
