@@ -511,6 +511,7 @@
 
   <script>
     let total = 0;
+    let expenses = [];
 
     function addDocument() {
       const name = document.getElementById("docName").value;
@@ -536,6 +537,25 @@
       fileInput.value = "";
     }
 
+    function renderExpenses() {
+      const list = document.getElementById("expenseList");
+      list.innerHTML = "";
+      total = 0;
+
+      for (let i = 0; i < expenses.length; i++) {
+        const expense = expenses[i];
+        const item = document.createElement("div");
+        item.className = "expense-item";
+        item.innerHTML =
+          "<span><strong>" + expense.name + "</strong> (" + expense.category + ")</span><span>₹" + expense.amount + "</span>";
+        list.appendChild(item);
+        total += Number(expense.amount);
+      }
+
+      document.getElementById("totalExpense").innerText = "₹" + total;
+      document.getElementById("monthlyExpense").innerText = "₹" + total;
+    }
+
     function addExpense() {
       const name = document.getElementById("expenseName").value;
       const category = document.getElementById("expenseCategory").value;
@@ -546,18 +566,27 @@
         return;
       }
 
-      const list = document.getElementById("expenseList");
-      const item = document.createElement("div");
-      item.className = "expense-item";
-      item.innerHTML = "<span><strong>" + name + "</strong> (" + category + ")</span><span>₹" + amount + "</span>";
-      list.appendChild(item);
+      const expenseData = {
+        name: name,
+        category: category,
+        amount: amount
+      };
 
-      total += Number(amount);
-      document.getElementById("totalExpense").innerText = "₹" + total;
-      document.getElementById("monthlyExpense").innerText = "₹" + total;
+      expenses.push(expenseData);
+      localStorage.setItem("finvaultExpenses", JSON.stringify(expenses));
+      renderExpenses();
 
       document.getElementById("expenseName").value = "";
       document.getElementById("expenseAmount").value = "";
+    }
+
+    function loadExpenses() {
+      const savedExpenses = localStorage.getItem("finvaultExpenses");
+
+      if (savedExpenses) {
+        expenses = JSON.parse(savedExpenses);
+        renderExpenses();
+      }
     }
 
     function calculateEMI() {
@@ -707,6 +736,7 @@
 
     window.onload = function () {
       loadProfile();
+      loadExpenses();
     };
   </script>
 </body>
