@@ -662,6 +662,17 @@
         return;
       }
 
+      const profileData = {
+        name: name,
+        email: email,
+        phone: phone,
+        city: city,
+        taxRegime: taxRegime,
+        monthlySalary: monthlySalary
+      };
+
+      localStorage.setItem("finvaultProfile", JSON.stringify(profileData));
+
       document.getElementById("profileResult").innerHTML =
         "<strong>Name:</strong> " + name + "<br>" +
         "<strong>Email:</strong> " + email + "<br>" +
@@ -670,6 +681,33 @@
         "<strong>Preferred Tax Regime:</strong> " + taxRegime + "<br>" +
         "<strong>Monthly Salary:</strong> ₹" + monthlySalary;
     }
+
+    function loadProfile() {
+      const savedProfile = localStorage.getItem("finvaultProfile");
+
+      if (savedProfile) {
+        const profile = JSON.parse(savedProfile);
+
+        document.getElementById("profileName").value = profile.name || "";
+        document.getElementById("profileEmail").value = profile.email || "";
+        document.getElementById("profilePhone").value = profile.phone || "";
+        document.getElementById("profileCity").value = profile.city || "";
+        document.getElementById("taxRegime").value = profile.taxRegime || "Old Regime";
+        document.getElementById("monthlySalary").value = profile.monthlySalary || "";
+
+        document.getElementById("profileResult").innerHTML =
+          "<strong>Name:</strong> " + profile.name + "<br>" +
+          "<strong>Email:</strong> " + profile.email + "<br>" +
+          "<strong>Phone:</strong> " + profile.phone + "<br>" +
+          "<strong>City:</strong> " + profile.city + "<br>" +
+          "<strong>Preferred Tax Regime:</strong> " + profile.taxRegime + "<br>" +
+          "<strong>Monthly Salary:</strong> ₹" + profile.monthlySalary;
+      }
+    }
+
+    window.onload = function () {
+      loadProfile();
+    };
   </script>
 </body>
 </html>
