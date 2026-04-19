@@ -98,11 +98,6 @@
       font-weight: bold;
     }
 
-    .section-title {
-      font-size: 28px;
-      margin: 28px 0 18px;
-    }
-
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -110,17 +105,27 @@
       margin-bottom: 24px;
     }
 
-    .card {
+    .card,
+    .expense-box,
+    .emi-box,
+    .sip-box,
+    .tax-box,
+    .vault-box {
       background: white;
       border-radius: 18px;
       padding: 22px;
       box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
     }
 
-    .card h2 {
-      font-size: 20px;
-      margin-bottom: 10px;
+    .card h2,
+    .expense-box h2,
+    .emi-box h2,
+    .sip-box h2,
+    .tax-box h2,
+    .vault-box h2 {
       color: #1e3a8a;
+      margin-bottom: 14px;
     }
 
     .card p {
@@ -129,49 +134,11 @@
       line-height: 1.6;
     }
 
-    .button-row {
-      margin-top: 10px;
-    }
-
-    .btn {
-      display: inline-block;
-      background: #2563eb;
-      color: white;
-      text-decoration: none;
-      padding: 12px 18px;
-      border-radius: 12px;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background: #1d4ed8;
-    }
-
-    .expense-box,
-    .emi-box,
-    .sip-box,
-    .tax-box {
-      background: white;
-      border-radius: 18px;
-      padding: 22px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-      margin-bottom: 24px;
-    }
-
-    .expense-box h2,
-    .emi-box h2,
-    .sip-box h2,
-    .tax-box h2 {
-      color: #1e3a8a;
-      margin-bottom: 14px;
-    }
-
     .expense-box label,
     .emi-box label,
     .sip-box label,
-    .tax-box label {
+    .tax-box label,
+    .vault-box label {
       display: block;
       margin-top: 12px;
       margin-bottom: 8px;
@@ -182,7 +149,8 @@
     .expense-box select,
     .emi-box input,
     .sip-box input,
-    .tax-box input {
+    .tax-box input,
+    .vault-box input {
       width: 100%;
       padding: 12px;
       border: 1px solid #cbd5e1;
@@ -193,7 +161,9 @@
     .expense-box button,
     .emi-box button,
     .sip-box button,
-    .tax-box button {
+    .tax-box button,
+    .vault-box button,
+    .btn {
       margin-top: 16px;
       padding: 12px 18px;
       background: #2563eb;
@@ -202,20 +172,26 @@
       border-radius: 10px;
       cursor: pointer;
       font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
     }
 
     .expense-box button:hover,
     .emi-box button:hover,
     .sip-box button:hover,
-    .tax-box button:hover {
+    .tax-box button:hover,
+    .vault-box button:hover,
+    .btn:hover {
       background: #1d4ed8;
     }
 
-    .expense-list {
+    .expense-list,
+    .vault-list {
       margin-top: 20px;
     }
 
-    .expense-item {
+    .expense-item,
+    .vault-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -230,7 +206,8 @@
     .total-box,
     .emi-result,
     .sip-result,
-    .tax-result {
+    .tax-result,
+    .vault-note {
       margin-top: 18px;
       background: #eff6ff;
       border-radius: 12px;
@@ -240,12 +217,18 @@
       line-height: 1.8;
     }
 
+    .section-title {
+      font-size: 28px;
+      margin: 28px 0 18px;
+    }
+
     @media (max-width: 700px) {
       .topbar h1 {
         font-size: 28px;
       }
 
-      .expense-item {
+      .expense-item,
+      .vault-item {
         flex-direction: column;
         align-items: flex-start;
       }
@@ -291,6 +274,24 @@
       <div class="stat-box">
         <h3>Investments</h3>
         <p>₹6,20,000</p>
+      </div>
+    </div>
+
+    <div class="vault-box">
+      <h2>Document Vault</h2>
+
+      <label for="docName">Document Name</label>
+      <input type="text" id="docName" placeholder="Example: Salary Slip March" />
+
+      <label for="docType">Document Type</label>
+      <input type="text" id="docType" placeholder="Example: Salary Slip / Form 16 / Bank Statement" />
+
+      <button onclick="addDocument()">Add Document</button>
+
+      <div class="vault-list" id="vaultList"></div>
+
+      <div class="vault-note">
+        This is a demo vault for now. Real file upload will come later.
       </div>
     </div>
 
@@ -408,13 +409,30 @@
       </div>
     </div>
 
-    <div class="button-row">
-      <a class="btn" href="index.html">Back to Home</a>
-    </div>
+    <a class="btn" href="index.html">Back to Home</a>
   </div>
 
   <script>
     let total = 0;
+
+    function addDocument() {
+      const name = document.getElementById("docName").value;
+      const type = document.getElementById("docType").value;
+
+      if (name === "" || type === "") {
+        alert("Please enter document name and type");
+        return;
+      }
+
+      const list = document.getElementById("vaultList");
+      const item = document.createElement("div");
+      item.className = "vault-item";
+      item.innerHTML = "<span><strong>" + name + "</strong></span><span>" + type + "</span>";
+      list.appendChild(item);
+
+      document.getElementById("docName").value = "";
+      document.getElementById("docType").value = "";
+    }
 
     function addExpense() {
       const name = document.getElementById("expenseName").value;
