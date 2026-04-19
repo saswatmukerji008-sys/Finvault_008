@@ -114,7 +114,8 @@
       background: #1d4ed8;
     }
 
-    .expense-box {
+    .expense-box,
+    .emi-box {
       background: white;
       border-radius: 18px;
       padding: 22px;
@@ -122,12 +123,14 @@
       margin-bottom: 24px;
     }
 
-    .expense-box h2 {
+    .expense-box h2,
+    .emi-box h2 {
       color: #1e3a8a;
       margin-bottom: 14px;
     }
 
-    .expense-box label {
+    .expense-box label,
+    .emi-box label {
       display: block;
       margin-top: 12px;
       margin-bottom: 8px;
@@ -135,7 +138,8 @@
     }
 
     .expense-box input,
-    .expense-box select {
+    .expense-box select,
+    .emi-box input {
       width: 100%;
       padding: 12px;
       border: 1px solid #cbd5e1;
@@ -143,7 +147,8 @@
       font-size: 15px;
     }
 
-    .expense-box button {
+    .expense-box button,
+    .emi-box button {
       margin-top: 16px;
       padding: 12px 18px;
       background: #2563eb;
@@ -154,7 +159,8 @@
       font-weight: bold;
     }
 
-    .expense-box button:hover {
+    .expense-box button:hover,
+    .emi-box button:hover {
       background: #1d4ed8;
     }
 
@@ -178,7 +184,8 @@
       font-size: 15px;
     }
 
-    .total-box {
+    .total-box,
+    .emi-result {
       margin-top: 18px;
       background: #eff6ff;
       border-radius: 12px;
@@ -254,6 +261,25 @@
       </div>
     </div>
 
+    <div class="emi-box">
+      <h2>EMI Calculator</h2>
+
+      <label for="loanAmount">Loan Amount</label>
+      <input type="number" id="loanAmount" placeholder="Example: 500000" />
+
+      <label for="interestRate">Interest Rate (%)</label>
+      <input type="number" id="interestRate" placeholder="Example: 10" />
+
+      <label for="loanMonths">Loan Tenure (Months)</label>
+      <input type="number" id="loanMonths" placeholder="Example: 60" />
+
+      <button onclick="calculateEMI()">Calculate EMI</button>
+
+      <div class="emi-result">
+        Monthly EMI: <span id="emiResult">₹0</span>
+      </div>
+    </div>
+
     <h2 class="section-title">Your Features</h2>
 
     <div class="grid">
@@ -313,6 +339,24 @@
 
       document.getElementById("expenseName").value = "";
       document.getElementById("expenseAmount").value = "";
+    }
+
+    function calculateEMI() {
+      const principal = Number(document.getElementById("loanAmount").value);
+      const annualRate = Number(document.getElementById("interestRate").value);
+      const months = Number(document.getElementById("loanMonths").value);
+
+      if (principal === 0 || annualRate === 0 || months === 0) {
+        alert("Please enter all EMI details");
+        return;
+      }
+
+      const monthlyRate = annualRate / 12 / 100;
+      const emi =
+        (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+        (Math.pow(1 + monthlyRate, months) - 1);
+
+      document.getElementById("emiResult").innerText = "₹" + emi.toFixed(2);
     }
   </script>
 </body>
