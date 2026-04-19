@@ -115,7 +115,8 @@
     .emi-box,
     .sip-box,
     .tax-box,
-    .vault-box {
+    .vault-box,
+    .news-box {
       background: white;
       border-radius: 18px;
       padding: 22px;
@@ -128,7 +129,8 @@
     .emi-box h2,
     .sip-box h2,
     .tax-box h2,
-    .vault-box h2 {
+    .vault-box h2,
+    .news-box h2 {
       color: #1e3a8a;
       margin-bottom: 14px;
     }
@@ -206,6 +208,37 @@
       border-radius: 12px;
       margin-bottom: 10px;
       gap: 10px;
+    }
+
+    .news-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 16px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+    }
+
+    .news-item h3 {
+      font-size: 18px;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .news-item p {
+      font-size: 14px;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    .news-tag {
+      display: inline-block;
+      margin-top: 10px;
+      background: #dbeafe;
+      color: #1e3a8a;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
     }
 
     .total-box,
@@ -380,6 +413,28 @@
         Old Regime Tax: <span id="oldTaxResult">₹0</span><br />
         New Regime Tax: <span id="newTaxResult">₹0</span><br />
         Better Option: <span id="betterOption">-</span>
+      </div>
+    </div>
+
+    <div class="news-box">
+      <h2>Finance News</h2>
+
+      <div class="news-item">
+        <h3>RBI policy updates and what they mean for loans</h3>
+        <p>Track how repo rate changes can affect loan EMIs, fixed deposits, and household budgeting.</p>
+        <span class="news-tag">RBI</span>
+      </div>
+
+      <div class="news-item">
+        <h3>Tax planning ideas for salaried professionals</h3>
+        <p>Review 80C, 80D, HRA, and year-end planning steps to reduce tax burden more effectively.</p>
+        <span class="news-tag">Tax</span>
+      </div>
+
+      <div class="news-item">
+        <h3>How SIP investing helps build long-term wealth</h3>
+        <p>Consistent monthly investing can support long-term goals like buying a home or building retirement savings.</p>
+        <span class="news-tag">Investing</span>
       </div>
     </div>
 
