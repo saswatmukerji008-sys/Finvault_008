@@ -208,8 +208,18 @@
       background: #d97706 !important;
     }
 
+    .reset-btn {
+      background: #dc2626 !important;
+      margin-left: 10px;
+    }
+
+    .reset-btn:hover {
+      background: #b91c1c !important;
+    }
+
     .expense-list,
-    .vault-list {
+    .vault-list,
+    .news-list {
       margin-top: 20px;
     }
 
@@ -323,7 +333,8 @@
         margin-right: 14px;
       }
 
-      .clear-btn {
+      .clear-btn,
+      .reset-btn {
         margin-left: 0;
       }
     }
@@ -409,6 +420,7 @@
 
       <button onclick="addExpense()">Add Expense</button>
       <button onclick="clearAllExpenses()" class="clear-btn">Clear All Expenses</button>
+      <button onclick="resetApp()" class="reset-btn">Reset App</button>
 
       <div class="expense-list" id="expenseList"></div>
 
@@ -475,24 +487,7 @@
 
     <div class="news-box">
       <h2>Finance News</h2>
-
-      <div class="news-item">
-        <h3>RBI policy updates and what they mean for loans</h3>
-        <p>Track how repo rate changes can affect loan EMIs, fixed deposits, and household budgeting.</p>
-        <span class="news-tag">RBI</span>
-      </div>
-
-      <div class="news-item">
-        <h3>Tax planning ideas for salaried professionals</h3>
-        <p>Review 80C, 80D, HRA, and year-end planning steps to reduce tax burden more effectively.</p>
-        <span class="news-tag">Tax</span>
-      </div>
-
-      <div class="news-item">
-        <h3>How SIP investing helps build long-term wealth</h3>
-        <p>Consistent monthly investing can support long-term goals like buying a home or building retirement savings.</p>
-        <span class="news-tag">Investing</span>
-      </div>
+      <div class="news-list" id="newsList"></div>
     </div>
 
     <div class="profile-box">
@@ -562,6 +557,40 @@
     let total = 0;
     let expenses = [];
     let documents = [];
+
+    const financeNews = [
+      {
+        title: "RBI policy updates and what they mean for loans",
+        description: "Track how repo rate changes can affect loan EMIs, fixed deposits, and household budgeting.",
+        tag: "RBI"
+      },
+      {
+        title: "Tax planning ideas for salaried professionals",
+        description: "Review 80C, 80D, HRA, and year-end planning steps to reduce tax burden more effectively.",
+        tag: "Tax"
+      },
+      {
+        title: "How SIP investing helps build long-term wealth",
+        description: "Consistent monthly investing can support long-term goals like buying a home or building retirement savings.",
+        tag: "Investing"
+      }
+    ];
+
+    function renderNews() {
+      const newsList = document.getElementById("newsList");
+      newsList.innerHTML = "";
+
+      for (let i = 0; i < financeNews.length; i++) {
+        const news = financeNews[i];
+        const item = document.createElement("div");
+        item.className = "news-item";
+        item.innerHTML =
+          "<h3>" + news.title + "</h3>" +
+          "<p>" + news.description + "</p>" +
+          '<span class="news-tag">' + news.tag + "</span>";
+        newsList.appendChild(item);
+      }
+    }
 
     function renderDocuments() {
       const list = document.getElementById("vaultList");
@@ -831,7 +860,46 @@
       }
     }
 
+    function resetApp() {
+      const confirmReset = confirm("Are you sure you want to reset the full app data?");
+      if (!confirmReset) {
+        return;
+      }
+
+      localStorage.removeItem("finvaultProfile");
+      localStorage.removeItem("finvaultExpenses");
+      localStorage.removeItem("finvaultDocuments");
+
+      expenses = [];
+      documents = [];
+      total = 0;
+
+      document.getElementById("expenseList").innerHTML = "";
+      document.getElementById("vaultList").innerHTML = "";
+      document.getElementById("totalExpense").innerText = "₹0";
+      document.getElementById("monthlyExpense").innerText = "₹0";
+
+      document.getElementById("profileName").value = "";
+      document.getElementById("profileEmail").value = "";
+      document.getElementById("profilePhone").value = "";
+      document.getElementById("profileCity").value = "";
+      document.getElementById("taxRegime").value = "Old Regime";
+      document.getElementById("monthlySalary").value = "";
+      document.getElementById("profileResult").innerHTML = "No profile saved yet.";
+
+      document.getElementById("docName").value = "";
+      document.getElementById("docType").value = "";
+      document.getElementById("docFile").value = "";
+
+      document.getElementById("expenseName").value = "";
+      document.getElementById("expenseCategory").value = "Rent";
+      document.getElementById("expenseAmount").value = "";
+
+      alert("App data has been reset.");
+    }
+
     window.onload = function () {
+      renderNews();
       loadProfile();
       loadExpenses();
       loadDocuments();
