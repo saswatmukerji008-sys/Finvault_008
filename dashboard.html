@@ -283,6 +283,7 @@
       font-size: 14px;
       color: #475569;
       line-height: 1.6;
+      margin-bottom: 10px;
     }
 
     .news-tag {
@@ -294,6 +295,19 @@
       border-radius: 999px;
       font-size: 12px;
       font-weight: bold;
+    }
+
+    .news-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .news-link:hover {
+      text-decoration: underline;
+      color: #1d4ed8;
     }
 
     .total-box,
@@ -562,17 +576,20 @@
       {
         title: "RBI policy updates and what they mean for loans",
         description: "Track how repo rate changes can affect loan EMIs, fixed deposits, and household budgeting.",
-        tag: "RBI"
+        tag: "RBI",
+        link: "https://www.rbi.org.in/"
       },
       {
         title: "Tax planning ideas for salaried professionals",
         description: "Review 80C, 80D, HRA, and year-end planning steps to reduce tax burden more effectively.",
-        tag: "Tax"
+        tag: "Tax",
+        link: "https://www.incometax.gov.in/"
       },
       {
         title: "How SIP investing helps build long-term wealth",
         description: "Consistent monthly investing can support long-term goals like buying a home or building retirement savings.",
-        tag: "Investing"
+        tag: "Investing",
+        link: "https://www.sebi.gov.in/"
       }
     ];
 
@@ -587,7 +604,8 @@
         item.innerHTML =
           "<h3>" + news.title + "</h3>" +
           "<p>" + news.description + "</p>" +
-          '<span class="news-tag">' + news.tag + "</span>";
+          '<span class="news-tag">' + news.tag + "</span><br>" +
+          '<a class="news-link" href="' + news.link + '" target="_blank">Read More</a>';
         newsList.appendChild(item);
       }
     }
