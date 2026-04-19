@@ -217,6 +217,33 @@
       gap: 10px;
     }
 
+    .expense-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .expense-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .delete-btn {
+      background: #dc2626;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 0;
+    }
+
+    .delete-btn:hover {
+      background: #b91c1c;
+    }
+
     .news-item {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
@@ -272,6 +299,11 @@
       .vault-item {
         flex-direction: column;
         align-items: flex-start;
+      }
+
+      .expense-right {
+        width: 100%;
+        justify-content: space-between;
       }
 
       .nav-links a {
@@ -547,7 +579,8 @@
         const item = document.createElement("div");
         item.className = "expense-item";
         item.innerHTML =
-          "<span><strong>" + expense.name + "</strong> (" + expense.category + ")</span><span>₹" + expense.amount + "</span>";
+          '<div class="expense-left"><strong>' + expense.name + '</strong><span>' + expense.category + '</span></div>' +
+          '<div class="expense-right"><span>₹' + expense.amount + '</span><button class="delete-btn" onclick="deleteExpense(' + i + ')">Delete</button></div>';
         list.appendChild(item);
         total += Number(expense.amount);
       }
@@ -578,6 +611,12 @@
 
       document.getElementById("expenseName").value = "";
       document.getElementById("expenseAmount").value = "";
+    }
+
+    function deleteExpense(index) {
+      expenses.splice(index, 1);
+      localStorage.setItem("finvaultExpenses", JSON.stringify(expenses));
+      renderExpenses();
     }
 
     function loadExpenses() {
