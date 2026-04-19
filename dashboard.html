@@ -116,7 +116,8 @@
     .sip-box,
     .tax-box,
     .vault-box,
-    .news-box {
+    .news-box,
+    .profile-box {
       background: white;
       border-radius: 18px;
       padding: 22px;
@@ -130,7 +131,8 @@
     .sip-box h2,
     .tax-box h2,
     .vault-box h2,
-    .news-box h2 {
+    .news-box h2,
+    .profile-box h2 {
       color: #1e3a8a;
       margin-bottom: 14px;
     }
@@ -145,7 +147,8 @@
     .emi-box label,
     .sip-box label,
     .tax-box label,
-    .vault-box label {
+    .vault-box label,
+    .profile-box label {
       display: block;
       margin-top: 12px;
       margin-bottom: 8px;
@@ -157,7 +160,9 @@
     .emi-box input,
     .sip-box input,
     .tax-box input,
-    .vault-box input {
+    .vault-box input,
+    .profile-box input,
+    .profile-box select {
       width: 100%;
       padding: 12px;
       border: 1px solid #cbd5e1;
@@ -170,6 +175,7 @@
     .sip-box button,
     .tax-box button,
     .vault-box button,
+    .profile-box button,
     .btn {
       margin-top: 16px;
       padding: 12px 18px;
@@ -188,6 +194,7 @@
     .sip-box button:hover,
     .tax-box button:hover,
     .vault-box button:hover,
+    .profile-box button:hover,
     .btn:hover {
       background: #1d4ed8;
     }
@@ -245,7 +252,8 @@
     .emi-result,
     .sip-result,
     .tax-result,
-    .vault-note {
+    .vault-note,
+    .profile-result {
       margin-top: 18px;
       background: #eff6ff;
       border-radius: 12px;
@@ -438,6 +446,37 @@
       </div>
     </div>
 
+    <div class="profile-box">
+      <h2>Profile</h2>
+
+      <label for="profileName">Full Name</label>
+      <input type="text" id="profileName" placeholder="Example: Rahul Sharma" />
+
+      <label for="profileEmail">Email</label>
+      <input type="email" id="profileEmail" placeholder="Example: rahul@email.com" />
+
+      <label for="profilePhone">Phone</label>
+      <input type="text" id="profilePhone" placeholder="Example: 9876543210" />
+
+      <label for="profileCity">City</label>
+      <input type="text" id="profileCity" placeholder="Example: Mumbai" />
+
+      <label for="taxRegime">Preferred Tax Regime</label>
+      <select id="taxRegime">
+        <option value="Old Regime">Old Regime</option>
+        <option value="New Regime">New Regime</option>
+      </select>
+
+      <label for="monthlySalary">Monthly Salary</label>
+      <input type="number" id="monthlySalary" placeholder="Example: 120000" />
+
+      <button onclick="saveProfile()">Save Profile</button>
+
+      <div class="profile-result" id="profileResult">
+        No profile saved yet.
+      </div>
+    </div>
+
     <h2 class="section-title">Your Features</h2>
 
     <div class="grid">
@@ -608,6 +647,28 @@
       } else {
         document.getElementById("betterOption").innerText = "Both Same";
       }
+    }
+
+    function saveProfile() {
+      const name = document.getElementById("profileName").value;
+      const email = document.getElementById("profileEmail").value;
+      const phone = document.getElementById("profilePhone").value;
+      const city = document.getElementById("profileCity").value;
+      const taxRegime = document.getElementById("taxRegime").value;
+      const monthlySalary = document.getElementById("monthlySalary").value;
+
+      if (name === "" || email === "") {
+        alert("Please enter at least name and email");
+        return;
+      }
+
+      document.getElementById("profileResult").innerHTML =
+        "<strong>Name:</strong> " + name + "<br>" +
+        "<strong>Email:</strong> " + email + "<br>" +
+        "<strong>Phone:</strong> " + phone + "<br>" +
+        "<strong>City:</strong> " + city + "<br>" +
+        "<strong>Preferred Tax Regime:</strong> " + taxRegime + "<br>" +
+        "<strong>Monthly Salary:</strong> ₹" + monthlySalary;
     }
   </script>
 </body>
